@@ -9,6 +9,10 @@
 # define FOV        0.66
 # define TEX_SIZE   64
 
+#define MOVE_SPEED 0.05
+#define ROT_SPEED 0.05
+#define EPS 1e-6
+
 /* keycodes (X11 vs macOS) ------------------------------------------------- */
 # ifdef __APPLE__
 #  define KEY_W     13

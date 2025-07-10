@@ -69,6 +69,7 @@ int     movement_update(t_cub *cub);
 void    draw_floor_ceil(t_cub *cub);
 void    raycaster(t_cub *cub);
 int     tex_sample(t_cub *cub, int id, int x, int y);
+void	draw_walls(t_cub *c, int x, t_ray *r);
 
 /* -------------------------------------------------------------------------- */
 /*  Utils (error / free)                                                      */

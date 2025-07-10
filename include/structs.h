@@ -7,6 +7,21 @@ typedef struct s_vec
 	double	y;
 }	t_vec;
 
+typedef struct s_ray
+{
+	t_vec	dir;
+	t_vec	side;
+	t_vec	delta;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	int		side_hit;
+	double	dist;
+	int		tex_id;
+	int		tex_x;
+}	t_ray;
+
 typedef struct s_img
 {
 	void	*ptr;

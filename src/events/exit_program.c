@@ -1,5 +1,4 @@
 #include "../../include/cub3d.h"
-#include <stdlib.h>
 
 int	exit_program(void *param)
 {

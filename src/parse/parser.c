@@ -1,7 +1,5 @@
 #include "../../include/cub3d.h"
 
-int	is_map_line(const char *s);
-
 /* store a duplicate into the list ------------------------------------------ */
 static int	store_line(t_list **lst, char *line)
 {

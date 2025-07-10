@@ -1,8 +1,5 @@
 #include "../../include/cub3d.h"
 
-#define MOVE_SPEED 0.05
-#define ROT_SPEED 0.05
-
 static int	is_wall(t_cub *c, double x, double y)
 {
 	if (y < 0 || y >= c->map.h || x < 0 || x >= c->map.w)

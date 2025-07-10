@@ -1,5 +1,4 @@
 #include "../../include/cub3d.h"
-#include "libft.h"
 
 static int	init_game(t_cub *cub, const char *map_path)
 {

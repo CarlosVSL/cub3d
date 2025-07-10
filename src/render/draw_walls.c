@@ -1,24 +1,5 @@
 #include "../../include/cub3d.h"
 
-/* local copy of the ray-hit struct (defined in raycaster.c) ---------------- */
-typedef struct s_ray
-{
-	t_vec	dir;
-	t_vec	side;
-	t_vec	delta;
-	int		map_x;
-	int		map_y;
-	int		step_x;
-	int		step_y;
-	int		side_hit;
-	double	dist;
-	int		tex_id;
-	int		tex_x;
-}	t_ray;
-
-/* forward ------------------------------------------------------------------ */
-int		tex_sample(t_cub *cub, int id, int x, int y);
-
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
 	if (x < 0 || x >= img->w || y < 0 || y >= img->h)

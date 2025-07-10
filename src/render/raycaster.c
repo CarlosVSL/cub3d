@@ -1,22 +1,5 @@
 #include "../../include/cub3d.h"
 
-#define EPS 1e-6
-
-typedef struct s_ray
-{
-	t_vec	dir;
-	t_vec	side;
-	t_vec	delta;
-	int		map_x;
-	int		map_y;
-	int		step_x;
-	int		step_y;
-	int		side_hit;
-	double	dist;
-	int		tex_id;
-	int		tex_x;
-}	t_ray;
-
 /* ------------------------------------------------------------------------ */
 static double	non_zero(double v)
 {
