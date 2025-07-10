@@ -92,10 +92,4 @@ double  ft_abs_d(double v);
 double  ft_max_d(double a, double b);
 double  ft_min_d(double a, double b);
 
-/* -------------------------------------------------------------------------- */
-/*  Color helpers                                                             */
-/* -------------------------------------------------------------------------- */
-int     argb(int a, int r, int g, int b);
-int     rgb_to_int(int r, int g, int b);
-
 #endif
