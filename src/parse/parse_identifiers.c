@@ -1,11 +1,19 @@
 #include "../../include/cub3d.h"
 
-/* store path only once ---------------------------------------------------- */
+/* guarda la ruta eliminando \n, \r y espacios finales --------------------- */
 static int	store_texture(t_cub *cub, int idx, char *path)
 {
+	char	*clean;
+	size_t	len;
+
 	if (cub->textures[idx].path)
 		return (-1);
-	cub->textures[idx].path = ft_strdup(skip_spaces(path));
+	clean = skip_spaces(path);
+	len = ft_strlen(clean);
+	while (len && (clean[len - 1] == '\n'
+			|| clean[len - 1] == '\r' || clean[len - 1] == ' '))
+		--len;
+	cub->textures[idx].path = ft_substr(clean, 0, len);
 	return (!cub->textures[idx].path);
 }
 

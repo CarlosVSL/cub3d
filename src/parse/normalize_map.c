@@ -11,17 +11,14 @@ static char	*pad_line(char *src, int w)
 	i = 0;
 	while (src[i] && i < w)
 	{
-		if (src[i] == ' ')
+		if (src[i] == ' ' || src[i] == '\n' || src[i] == '\r')
 			dst[i] = '1';
 		else
 			dst[i] = src[i];
 		++i;
 	}
 	while (i < w)
-	{
-		dst[i] = '1';
-		++i;
-	}
+		dst[i++] = '1';
 	dst[w] = '\0';
 	return (dst);
 }

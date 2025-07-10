@@ -21,8 +21,8 @@ static int	grow_grid(char ***grid, int *cap)
 	return (0);
 }
 
-/* duplicate & store one line, stripping trailing newlines */
-static int	push_line(char *l, char ***g, int *h, int *cap, int *w)
+/* duplicate & store one line, stripping trailing newlines ------------------ */
+static int	push_line(char *src, char ***g, int *h, int *cap, int *w)
 {
 	char	*dup;
 	char	*end;
@@ -30,10 +30,10 @@ static int	push_line(char *l, char ***g, int *h, int *cap, int *w)
 
 	if (*h >= *cap && grow_grid(g, cap))
 		return (-1);
-	dup = ft_strdup(l);
+	dup = ft_strdup(src);
 	if (!dup)
 		return (-1);
-	/*––– Strip trailing '\n' or '\r' –––*/
+	/* — Recortar ‘\n’ y ‘\r’ al final — */
 	end = dup + ft_strlen(dup) - 1;
 	while (end >= dup && (*end == '\n' || *end == '\r'))
 		*end-- = '\0';
