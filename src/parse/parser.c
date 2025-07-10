@@ -1,13 +1,18 @@
 #include "../../include/cub3d.h"
 
-/* store a duplicate into the list ------------------------------------------ */
+/* store a duplicate into the list, stripping trailing newlines ------------ */
 static int	store_line(t_list **lst, char *line)
 {
 	char	*dup;
+	char	*end;
 
 	dup = ft_strdup(line);
 	if (!dup)
 		return (-1);
+	/* quitar '\n' o '\r' al final */
+	end = dup + ft_strlen(dup) - 1;
+	while (end >= dup && (*end == '\n' || *end == '\r'))
+		*end-- = '\0';
 	ft_lstadd_back(lst, ft_lstnew(dup));
 	return (0);
 }
@@ -21,7 +26,10 @@ static int	read_file(int fd, t_list **lst)
 	while (line)
 	{
 		if (store_line(lst, line))
-			return (free(line), -1);
+		{
+			free(line);
+			return (-1);
+		}
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -29,33 +37,31 @@ static int	read_file(int fd, t_list **lst)
 }
 
 /* process metadata and then initialize the map ---------------------------- */
-static int	process_meta(t_cub *c, t_list *n, const char *path)
+static int	process_meta(t_cub *cub, t_list *node, const char *path)
 {
 	char	*str;
 
-	while (n)
+	while (node)
 	{
-		str = (char *)n->content;
-		if (*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')
-			if (parse_texture_line(c, str))
-				return (-1);
-		if (*str == 'F')
-			if (parse_color_line(&c->floor_color, str))
-				return (-1);
-		if (*str == 'C')
-			if (parse_color_line(&c->ceil_color, str))
-				return (-1);
+		str = (char *)node->content;
+		if ((*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')
+			&& parse_texture_line(cub, str))
+			return (-1);
+		if (*str == 'F' && parse_color_line(&cub->floor_color, str))
+			return (-1);
+		if (*str == 'C' && parse_color_line(&cub->ceil_color, str))
+			return (-1);
 		if (is_map_line(str))
 			break ;
-		n = n->next;
+		node = node->next;
 	}
-	if (!n)
+	if (!node)
 		return (-1);
-	/* Ahora pasamos la ruta original en lugar de la línea de texto */
-	return (init_map(c, path));
+	/* PASAMOS LA RUTA ORIGINAL, no la línea del mapa */
+	return (init_map(cub, path));
 }
 
-/* PUBLIC: parse the entire scene (.cub) file ------------------------------ */
+/* PUBLIC: parse entire scene file (.cub) ---------------------------------- */
 int	parse_scene(t_cub *cub, const char *path)
 {
 	int		fd;
@@ -65,9 +71,13 @@ int	parse_scene(t_cub *cub, const char *path)
 	if (fd < 0)
 		return (-1);
 	lst = NULL;
-	/* Ajustamos la llamada para pasar también 'path' a process_meta */
+	/* le pasamos 'path' a process_meta para luego reabrir el .cub correcto */
 	if (read_file(fd, &lst) || process_meta(cub, lst, path))
-		return (ft_lstclear(&lst, free), close(fd), -1);
+	{
+		ft_lstclear(&lst, free);
+		close(fd);
+		return (-1);
+	}
 	ft_lstclear(&lst, free);
 	close(fd);
 	return (0);
