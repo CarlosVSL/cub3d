@@ -28,8 +28,8 @@ static int	read_file(int fd, t_list **lst)
 	return (0);
 }
 
-/* extract identifiers & colours, stop at first map line -------------------- */
-static int	process_meta(t_cub *c, t_list *n)
+/* process metadata and then initialize the map ---------------------------- */
+static int	process_meta(t_cub *c, t_list *n, const char *path)
 {
 	char	*str;
 
@@ -51,10 +51,11 @@ static int	process_meta(t_cub *c, t_list *n)
 	}
 	if (!n)
 		return (-1);
-	return (init_map(c, str));
+	/* Ahora pasamos la ruta original en lugar de la línea de texto */
+	return (init_map(c, path));
 }
 
-/* PUBLIC ------------------------------------------------------------------- */
+/* PUBLIC: parse the entire scene (.cub) file ------------------------------ */
 int	parse_scene(t_cub *cub, const char *path)
 {
 	int		fd;
@@ -64,7 +65,8 @@ int	parse_scene(t_cub *cub, const char *path)
 	if (fd < 0)
 		return (-1);
 	lst = NULL;
-	if (read_file(fd, &lst) || process_meta(cub, lst))
+	/* Ajustamos la llamada para pasar también 'path' a process_meta */
+	if (read_file(fd, &lst) || process_meta(cub, lst, path))
 		return (ft_lstclear(&lst, free), close(fd), -1);
 	ft_lstclear(&lst, free);
 	close(fd);
