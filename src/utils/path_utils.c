@@ -31,3 +31,14 @@ char	*path_join(const char *dir, const char *file)
 	free(tmp);
 	return (joined);
 }
+
+char	*ft_path_parent(const char *dir)
+{
+	return (path_join(dir, ".."));
+}
+
+/* 0 = no existe, 1 = existe y es legible */
+int	file_exists(const char *path)
+{
+	return (access(path, F_OK) == 0);
+}

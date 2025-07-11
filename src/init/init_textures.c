@@ -1,44 +1,50 @@
 #include "../../include/cub3d.h"
 
-/* ------------------------------------------------------------------------ */
-static int	load_tex(t_cub *c, t_texture *t, char *path)
+static void *try_load(void *mlx, const char *path, int *w, int *h)
 {
-	char	*full;
-	int		need_free;
+	if (file_exists(path))
+		return (mlx_xpm_file_to_image(mlx, (char *)path, w, h));
+	return (NULL);
+}
 
-	if (path[0] != '/')
+static int	load_tex(t_cub *c, t_texture *tex, char *orig)
+{
+	char	*paths[3] = {NULL, NULL, NULL};
+	void	*img = NULL;
+
+	/* 1) tal cual se encuentra en el .cub */
+	paths[0] = orig;
+
+	/* 2) map_dir + ruta (solo si no empieza por '/') */
+	if (orig[0] != '/')
+		paths[1] = path_join(c->map_dir, orig);
+
+	/* 3) parent(map_dir) + ruta  (caso map + textures en carpetas hermanas) */
+	if (orig[0] != '/')
 	{
-		full = path_join(c->map_dir, path);
-		if (!full)
-			return (-1);
-		need_free = 1;
+		char *parent = ft_path_parent(c->map_dir);
+		if (parent)
+		{
+			paths[2] = path_join(parent, orig);
+			free(parent);
+		}
 	}
-	else
+
+	for (int i = 0; i < 3 && !img && paths[i]; ++i)
+		img = try_load(c->mlx, paths[i], &tex->img.w, &tex->img.h);
+
+	if (paths[1]) free(paths[1]);
+	if (paths[2]) free(paths[2]);
+
+	if (!img || tex->img.w != TEX_SIZE || tex->img.h != TEX_SIZE)
 	{
-		full = path;
-		need_free = 0;
-	}
-
-	t->img.ptr = mlx_xpm_file_to_image(c->mlx, full, &t->img.w, &t->img.h);
-
-	if (need_free)
-		free(full);
-
-	if (!t->img.ptr)
+		if (img) mlx_destroy_image(c->mlx, img);
 		return (-1);
-	if (t->img.w != TEX_SIZE || t->img.h != TEX_SIZE)
-	{
-		mlx_destroy_image(c->mlx, t->img.ptr);
-		return (-1);
 	}
-	t->img.data = (int *)mlx_get_data_addr(t->img.ptr, &t->img.bpp,
-			&t->img.line_len, &t->img.endian);
-	if (!t->img.data)
-	{
-		mlx_destroy_image(c->mlx, t->img.ptr);
-		return (-1);
-	}
-	return (0);
+	tex->img.ptr = img;
+	tex->img.data = (int *)mlx_get_data_addr(img, &tex->img.bpp,
+				&tex->img.line_len, &tex->img.endian);
+	return (tex->img.data ? 0 : -1);
 }
 
 
