@@ -1,15 +1,19 @@
 #include "../../include/cub3d.h"
 
-static int	init_screen(t_cub *cub)
+static int init_screen(t_cub *cub)
 {
-	if (cub->screen.ptr)
-		return (0);
-	cub->screen.ptr = mlx_new_image(cub->mlx, WIN_W, WIN_H);
-	if (!cub->screen.ptr)
-		return (-1);
-	cub->screen.data = (int *)mlx_get_data_addr(cub->screen.ptr,
-		&cub->screen.bpp, &cub->screen.line_len, &cub->screen.endian);
-	return (0);
+    if (cub->screen.ptr)
+        return (0);
+
+    cub->screen.ptr = mlx_new_image(cub->mlx, WIN_W, WIN_H);
+    if (!cub->screen.ptr)
+        return (-1);
+    cub->screen.w = WIN_W;
+    cub->screen.h = WIN_H;
+
+    cub->screen.data = (int *)mlx_get_data_addr(cub->screen.ptr,
+        &cub->screen.bpp, &cub->screen.line_len, &cub->screen.endian);
+    return (0);
 }
 
 int	loop_hook(void *param)
