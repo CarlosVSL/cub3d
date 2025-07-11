@@ -61,6 +61,7 @@ static int	process_meta(t_cub *cub, t_list *node, const char *path)
 	if (!node)
 		return (-1);
 	return (init_map(cub, path));
+}
 
 /* PUBLIC: parse entire scene file (.cub) ---------------------------------- */
 int	parse_scene(t_cub *cub, const char *path)
