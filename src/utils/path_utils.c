@@ -6,15 +6,26 @@
 /* -------------------------------------------------------------------------- */
 char	*ft_dirname(const char *path)
 {
-	const char	*slash;
+	size_t	i;
+	char	*dir;
 
-	if (!path)
-		return (NULL);
-	slash = strrchr(path, '/');
-	if (!slash)                               /* sin '/' -> directorio "."   */
+	if (!path || !*path)
 		return (ft_strdup("."));
-	return (ft_substr(path, 0, slash - path)); /* dup sin el '/' final        */
+	i = 0;
+	while (path[i])
+		++i;
+	while (i && path[i - 1] != '/')
+		--i;
+	if (i == 0)
+		return (ft_strdup("."));
+	dir = (char *)malloc(i + 1);
+	if (!dir)
+		return (NULL);
+	ft_memcpy(dir, path, i);
+	dir[i] = '\0';
+	return (dir);
 }
+
 
 /* -------------------------------------------------------------------------- */
 /*  Une `dir` + "/" + `file`  →  string nuevo                                 */
@@ -40,5 +51,11 @@ char	*ft_path_parent(const char *dir)
 /* 0 = no existe, 1 = existe y es legible */
 int	file_exists(const char *path)
 {
-	return (access(path, F_OK) == 0);
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	return (1);
 }

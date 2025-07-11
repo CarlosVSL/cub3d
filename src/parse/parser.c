@@ -9,7 +9,6 @@ static int	store_line(t_list **lst, char *line)
 	dup = ft_strdup(line);
 	if (!dup)
 		return (-1);
-	/* quitar '\n' o '\r' al final */
 	end = dup + ft_strlen(dup) - 1;
 	while (end >= dup && (*end == '\n' || *end == '\r'))
 		*end-- = '\0';
@@ -45,7 +44,7 @@ static int	process_meta(t_cub *cub, t_list *node, const char *path)
 	while (node)
 	{
 		str = (char *)node->content;
-		s = skip_spaces(str);                              /* NUEVO */
+		s = skip_spaces(str);
 
 		if ((*s == 'N' || *s == 'S' || *s == 'W' || *s == 'E')
 			&& parse_texture_line(cub, s))

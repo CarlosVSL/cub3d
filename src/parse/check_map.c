@@ -1,6 +1,5 @@
 #include "../../include/cub3d.h"
 
-/* ------------------------------------------------------------------------ */
 static int	validate_cell(t_map *m, int y, int x, int *sp)
 {
 	if (!is_walk(m->grid[y][x]))
@@ -14,7 +13,6 @@ static int	validate_cell(t_map *m, int y, int x, int *sp)
 	return (0);
 }
 
-/* ------------------------------------------------------------------------ */
 int	check_map(t_cub *cub)
 {
 	t_map	*m;
