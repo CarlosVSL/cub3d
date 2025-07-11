@@ -36,16 +36,20 @@ static void	rotate(t_player *p, double angle)
 int	movement_update(t_cub *c)
 {
 	if (c->keys.w)
-		move(c, c->player.dir.x * MOVE_SPEED, c->player.dir.y * MOVE_SPEED);
+		move(c, c->player.dir.x * MOVE_SPEED,
+				 c->player.dir.y * MOVE_SPEED);
 	if (c->keys.s)
-		move(c, -c->player.dir.x * MOVE_SPEED, -c->player.dir.y * MOVE_SPEED);
+		move(c, -c->player.dir.x * MOVE_SPEED,
+				 -c->player.dir.y * MOVE_SPEED);
 	if (c->keys.a)
-		move(c, -c->player.dir.y * MOVE_SPEED, c->player.dir.x * MOVE_SPEED);
+		move(c,  c->player.dir.y * MOVE_SPEED,
+				-c->player.dir.x * MOVE_SPEED);
 	if (c->keys.d)
-		move(c, c->player.dir.y * MOVE_SPEED, -c->player.dir.x * MOVE_SPEED);
+		move(c, -c->player.dir.y * MOVE_SPEED,
+				 c->player.dir.x * MOVE_SPEED);
 	if (c->keys.left)
-		rotate(&c->player, -ROT_SPEED);
+		rotate(&c->player,  ROT_SPEED);
 	if (c->keys.right)
-		rotate(&c->player, ROT_SPEED);
+		rotate(&c->player, -ROT_SPEED);
 	return (0);
 }
