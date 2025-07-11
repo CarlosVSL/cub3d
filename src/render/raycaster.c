@@ -41,11 +41,13 @@ static void	set_step_side(t_cub *c, t_ray *r)
 static void	set_ray_dist(t_cub *c, t_ray *r)
 {
 	if (r->side_hit == 0)
-		r->dist = (r->map_x - c->player.pos.x + (1 - r->step_x) * 0.5)
-			/ r->dir.x;
+		r->dist = (r->map_x - c->player.pos.x + (1 - r->step_x) * 0.5) / r->dir.x;
 	else
-		r->dist = (r->map_y - c->player.pos.y + (1 - r->step_y) * 0.5)
-			/ r->dir.y;
+		r->dist = (r->map_y - c->player.pos.y + (1 - r->step_y) * 0.5) / r->dir.y;
+	/* ‼️ Siempre positiva y ≥ EPS para evitar columnas de altura 0 */
+	r->dist = fabs(r->dist);
+	if (r->dist < EPS)
+		r->dist = EPS;
 }
 
 /* ------------------------------------------------------------------------ */

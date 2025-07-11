@@ -33,7 +33,6 @@ static int	push_line(char *src, char ***g, int *h, int *cap, int *w)
 	dup = ft_strdup(src);
 	if (!dup)
 		return (-1);
-	/* — Recortar ‘\n’ y ‘\r’ al final — */
 	end = dup + ft_strlen(dup) - 1;
 	while (end >= dup && (*end == '\n' || *end == '\r'))
 		*end-- = '\0';
@@ -44,6 +43,7 @@ static int	push_line(char *src, char ***g, int *h, int *cap, int *w)
 	++(*h);
 	return (0);
 }
+
 
 /* skip until first map line ------------------------------------------------ */
 static int	skip_to_map(int fd, char **line)

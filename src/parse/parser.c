@@ -40,26 +40,27 @@ static int	read_file(int fd, t_list **lst)
 static int	process_meta(t_cub *cub, t_list *node, const char *path)
 {
 	char	*str;
+	char	*s;
 
 	while (node)
 	{
 		str = (char *)node->content;
-		if ((*str == 'N' || *str == 'S' || *str == 'W' || *str == 'E')
-			&& parse_texture_line(cub, str))
+		s = skip_spaces(str);                              /* NUEVO */
+
+		if ((*s == 'N' || *s == 'S' || *s == 'W' || *s == 'E')
+			&& parse_texture_line(cub, s))
 			return (-1);
-		if (*str == 'F' && parse_color_line(&cub->floor_color, str))
+		if (*s == 'F' && parse_color_line(&cub->floor_color, s))
 			return (-1);
-		if (*str == 'C' && parse_color_line(&cub->ceil_color, str))
+		if (*s == 'C' && parse_color_line(&cub->ceil_color, s))
 			return (-1);
-		if (is_map_line(str))
+		if (is_map_line(s))
 			break ;
 		node = node->next;
 	}
 	if (!node)
 		return (-1);
-	/* PASAMOS LA RUTA ORIGINAL, no la línea del mapa */
 	return (init_map(cub, path));
-}
 
 /* PUBLIC: parse entire scene file (.cub) ---------------------------------- */
 int	parse_scene(t_cub *cub, const char *path)
