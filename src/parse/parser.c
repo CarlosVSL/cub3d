@@ -72,8 +72,8 @@ int	parse_scene(t_cub *cub, const char *path)
 	if (fd < 0)
 		return (-1);
 	lst = NULL;
-	/* le pasamos 'path' a process_meta para luego reabrir el .cub correcto */
-	if (read_file(fd, &lst) || process_meta(cub, lst, path))
+	if (read_file(fd, &lst) || process_meta(cub, lst, path)
+		|| check_map(cub))
 	{
 		ft_lstclear(&lst, free);
 		close(fd);

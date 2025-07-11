@@ -39,13 +39,18 @@ void	draw_walls(t_cub *c, int x, t_ray *r)
 	double	tex_pos;
 
 	line_h = (int)(WIN_H / r->dist);
+	if (line_h < 1)
+		line_h = 1;
+
 	start = -line_h / 2 + WIN_H / 2;
 	if (start < 0)
 		start = 0;
 	end = line_h / 2 + WIN_H / 2;
 	if (end >= WIN_H)
 		end = WIN_H - 1;
+
 	step = (double)TEX_SIZE / line_h;
 	tex_pos = (start - WIN_H / 2 + line_h / 2) * step;
+
 	draw_slice(c, x, r, start, end, step, tex_pos);
 }

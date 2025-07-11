@@ -15,6 +15,7 @@
 # include "structs.h"
 # include "loop.h"
 # include "mlx_custom.h"
+# include "path_utils.h"
 
 /* -------------------------------------------------------------------------- */
 /*  High-level                                                               */

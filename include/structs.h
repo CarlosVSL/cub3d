@@ -74,6 +74,7 @@ typedef struct s_cub
 	t_keys		keys;
 	int			floor_color;
 	int			ceil_color;
+	char		*map_dir;
 }	t_cub;
 
 #endif

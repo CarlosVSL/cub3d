@@ -3,7 +3,27 @@
 /* ------------------------------------------------------------------------ */
 static int	load_tex(t_cub *c, t_texture *t, char *path)
 {
-	t->img.ptr = mlx_xpm_file_to_image(c->mlx, path, &t->img.w, &t->img.h);
+	char	*full;
+	int		need_free;
+
+	if (path[0] != '/')
+	{
+		full = path_join(c->map_dir, path);
+		if (!full)
+			return (-1);
+		need_free = 1;
+	}
+	else
+	{
+		full = path;
+		need_free = 0;
+	}
+
+	t->img.ptr = mlx_xpm_file_to_image(c->mlx, full, &t->img.w, &t->img.h);
+
+	if (need_free)
+		free(full);
+
 	if (!t->img.ptr)
 		return (-1);
 	if (t->img.w != TEX_SIZE || t->img.h != TEX_SIZE)
@@ -20,6 +40,7 @@ static int	load_tex(t_cub *c, t_texture *t, char *path)
 	}
 	return (0);
 }
+
 
 /* ------------------------------------------------------------------------ */
 int	init_textures(t_cub *cub)

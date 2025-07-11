@@ -3,6 +3,10 @@
 static int	init_game(t_cub *cub, const char *map_path)
 {
 	ft_bzero(cub, sizeof(t_cub));
+
+	cub->map_dir = ft_dirname(map_path);
+	if (!cub->map_dir)
+		return (-1);
 	if (parse_scene(cub, map_path))
 		return (-1);
 	if (init_mlx(cub))

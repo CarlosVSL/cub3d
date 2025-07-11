@@ -36,6 +36,7 @@ void	cub_cleanup(t_cub *cub)
 {
 	if (!cub)
 		return ;
+	free(cub->map_dir);
 	free_grid(cub->map.grid);
 	free_textures(cub);
 	if (cub->screen.ptr)
