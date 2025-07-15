@@ -62,6 +62,7 @@ static int	load_tex(t_cub *c, t_texture *tex, char *orig)
 	if (tex->img.data)
 		return (0);
 	return (-1);
+}
 
 /* ------------------------------------------------------------------------ */
 int	init_textures(t_cub *cub)
