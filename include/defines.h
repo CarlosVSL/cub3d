@@ -32,4 +32,20 @@
 #  define KEY_RIGHT 65363
 # endif
 
+#ifndef EPS
+# define EPS 1e-9
+#endif
+
+#ifndef COLLISION_RADIUS
+# define COLLISION_RADIUS  0.20   /* radio físico del jugador (en celdas) */
+#endif
+
+#ifndef MAX_MOVE_STEP
+# define MAX_MOVE_STEP  0.25   /* longitud máxima por subpaso */
+#endif
+
+#ifndef MIN_MOVE_DISTANCE
+# define MIN_MOVE_DISTANCE  (1e-6)
+#endif
+
 #endif

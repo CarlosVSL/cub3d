@@ -1,13 +1,5 @@
 #include "../../include/cub3d.h"
 
-#ifndef EPS
-# define EPS 1e-9
-#endif
-#ifndef MAX_MOVE_STEP
-# define MAX_MOVE_STEP  0.25   /* longitud máxima por subpaso */
-#endif
-
-void    apply_wall_sliding(t_cub *c, double dx, double dy);
 
 /* -------------------------------------------------------------------------- */
 static void subdivide_movement_steps(t_cub *c, double total_dx, double total_dy,

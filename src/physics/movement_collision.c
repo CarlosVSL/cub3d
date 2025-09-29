@@ -1,16 +1,6 @@
 #include "../../include/cub3d.h"
 
 /* -------------------------------------------------------------------------- */
-/*  Parámetros por defecto                                                     */
-/* -------------------------------------------------------------------------- */
-#ifndef COLLISION_RADIUS
-# define COLLISION_RADIUS  0.20   /* radio físico del jugador (en celdas) */
-#endif
-#ifndef EPS
-# define EPS 1e-9
-#endif
-
-/* -------------------------------------------------------------------------- */
 /*  Stub de colisión con sprites/otros (ajústalo si tu base tiene sprites)    */
 /*  Devuelve 0 para ignorar sprites; no requiere headers extra.               */
 /* -------------------------------------------------------------------------- */

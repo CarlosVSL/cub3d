@@ -63,7 +63,11 @@ int     out_of_bounds(t_map *m, int y, int x);
 /*  Game logic                                                                */
 /* -------------------------------------------------------------------------- */
 int     movement_update(t_cub *cub);
-
+int     is_wall(t_cub *c, double x, double y);
+void    wall_slide_move(t_cub *c, double dx, double dy);
+void    try_smooth_move(t_cub *c, double dx, double dy);
+void    apply_wall_sliding(t_cub *c, double dx, double dy);
+void    subdiv_move(t_cub *c, double total_dx, double total_dy);
 /* -------------------------------------------------------------------------- */
 /*  Rendering                                                                 */
 /* -------------------------------------------------------------------------- */

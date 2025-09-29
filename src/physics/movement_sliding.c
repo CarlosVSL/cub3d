@@ -1,9 +1,5 @@
 #include "../../include/cub3d.h"
 
-#ifndef EPS
-# define EPS 1e-9
-#endif
-
 /* -------------------------------------------------------------------------- */
 /*  Búsqueda binaria de la fracción máxima del desplazamiento sin colisión    */
 /* -------------------------------------------------------------------------- */

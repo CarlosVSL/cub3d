@@ -1,18 +1,6 @@
 #include "../../include/cub3d.h"
 
 /* -------------------------------------------------------------------------- */
-/*  Parámetros por defecto (puedes moverlos al .h si quieres afinarlos)       */
-/* -------------------------------------------------------------------------- */
-#ifndef MIN_MOVE_DISTANCE
-# define MIN_MOVE_DISTANCE  (1e-6)
-#endif
-
-/* -------------------------------------------------------------------------- */
-/*  Prototipos locales de utilidades implementadas en otros .c nuevos         */
-/* -------------------------------------------------------------------------- */
-void    subdiv_move(t_cub *c, double total_dx, double total_dy);
-
-/* -------------------------------------------------------------------------- */
 /*  Rotación del jugador (igual que base, expuesta para reutilizar)           */
 /* -------------------------------------------------------------------------- */
 void    rotate_player(t_player *p, double angle)

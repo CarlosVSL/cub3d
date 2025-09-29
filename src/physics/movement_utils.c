@@ -1,9 +1,5 @@
 #include "../../include/cub3d.h"
 
-#ifndef EPS
-# define EPS 1e-9
-#endif
-
 static void try_move_x(t_cub *c, double dx)
 {
     double nx;
