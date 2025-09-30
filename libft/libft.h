@@ -17,6 +17,10 @@
 #  define BUFFER_SIZE 42
 # endif
 
+# ifndef GNL_MAX_FD
+#  define GNL_MAX_FD 1024
+# endif
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
