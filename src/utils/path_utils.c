@@ -65,6 +65,8 @@ int	file_exists(const char *path)
 {
 	int	fd;
 
+	if (!path || !*path)
+		return (0);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (0);
