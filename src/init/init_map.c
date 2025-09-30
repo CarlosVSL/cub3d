@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: carlsanc <carlsanc@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/30 14:39:54 by carlsanc          #+#    #+#             */
-/*   Updated: 2025/09/30 14:39:54 by carlsanc         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/cub3d.h"
 
 /* dynamic grid growth ------------------------------------------------------ */
@@ -68,6 +56,7 @@ static int	skip_to_map(int fd, char **line)
 	}
 	return (0);
 }
+
 /* drena GNL hasta EOF para liberar la stash del fd ------------------------ */
 static void	gnl_drain(int fd)
 {
@@ -110,4 +99,24 @@ int	read_map(int fd, t_cub *cub, int *cap)
 		gnl_drain(fd); /* asegura Valgrind limpio: libera stash de GNL */
 	}
 	return (err);
+}
+
+/* PUBLIC ------------------------------------------------------------------- */
+int	init_map(t_cub *cub, const char *path)
+{
+	int	fd;
+	int	cap;
+
+	cap = 16;
+	cub->map.grid = (char **)malloc(sizeof(char *) * (cap + 1));
+	if (!cub->map.grid)
+		return (-1);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	if (read_map(fd, cub, &cap))
+		return (close(fd), -1);
+	cub->map.grid[cub->map.h] = NULL;
+	close(fd);
+	return (normalize_map(&cub->map));
 }
