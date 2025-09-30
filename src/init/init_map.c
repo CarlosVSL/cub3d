@@ -68,6 +68,22 @@ static int	skip_to_map(int fd, char **line)
 	}
 	return (0);
 }
+/* drena GNL hasta EOF para liberar la stash del fd ------------------------ */
+static void	gnl_drain(int fd)
+{
+	char	*s;
+
+	while ((s = get_next_line(fd)) != NULL)
+		free(s);
+}
+
+/* true si la línea es solo espacios/tabs/CR/LF --------------------------- */
+static int	is_blank_line(const char *s)
+{
+	while (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\n')
+		++s;
+	return (*s == '\0');
+}
 
 /* read map block ----------------------------------------------------------- */
 static int	read_map(int fd, t_cub *cub, int *cap)
@@ -87,22 +103,29 @@ static int	read_map(int fd, t_cub *cub, int *cap)
 	return (0);
 }
 
-/* PUBLIC ------------------------------------------------------------------- */
-int	init_map(t_cub *cub, const char *path)
+/* lee la sección de mapa y valida que no haya contenido tras el mapa ------ */
+int	read_map(int fd, t_cub *cub, int *cap)
 {
-	int	fd;
-	int	cap;
+	char	*line;
+	int		err;
 
-	cap = 16;
-	cub->map.grid = (char **)malloc(sizeof(char *) * (cap + 1));
-	if (!cub->map.grid)
+	err = 0;
+	if (skip_to_map(fd, &line))
 		return (-1);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (read_map(fd, cub, &cap))
-		return (close(fd), -1);
-	cub->map.grid[cub->map.h] = NULL;
-	close(fd);
-	return (normalize_map(&cub->map));
+	while (line && is_map_line(line))
+	{
+		if (push_line(line, &cub->map.grid, &cub->map.h, cap, &cub->map.w))
+			return (free(line), gnl_drain(fd), -1);
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (line)
+	{
+		/* Si hay algo no-vacío después del mapa => error (el mapa debe ser lo último) */
+		if (!is_blank_line(line))
+			err = -1;
+		free(line);
+		gnl_drain(fd); /* asegura Valgrind limpio: libera stash de GNL */
+	}
+	return (err);
 }

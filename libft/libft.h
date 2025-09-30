@@ -17,10 +17,6 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# ifndef GNL_MAX_FD
-#  define GNL_MAX_FD 1024
-# endif
-
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -35,11 +31,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
-
-typedef struct s_gnl
-{
-	char	*remainder;
-}	t_gnl;
 
 int		ft_isalpha(int a);
 int		ft_isdigit(int d);
@@ -99,11 +90,5 @@ void	ft_error(char *str, t_bool e);
 int		ft_sqrt(int nmb);
 void	ft_free_split(char **arr);
 int		ft_strcmp(const char *s1, const char *s2);
-
-size_t	gnl_strlen(const char *s);
-char	*gnl_strchr(const char *s, int c);
-char	*gnl_substr(const char *s, size_t start, size_t len);
-char	*gnl_strdup(const char *s);
-char	*gnl_join_free(char *s1, const char *s2);
 
 #endif
