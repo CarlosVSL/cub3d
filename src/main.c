@@ -46,10 +46,10 @@ int main(int argc, char **argv)
     if (argc != 2)
         error_exit("Usage: ./cub3D <map.cub>");
     if (!has_cub_extension(argv[1]))
-        error_exit("Map file must have .cub extension");
+        error_exit("Invalid file extension: expected .cub");
     fd = open(argv[1], O_RDONLY);
     if (fd < 0)
-        error_exit("Map file not found");
+        error_exit("Map file not found or not readable");
     close(fd);
 
     if (cub3d_run(argv[1]) != 0)
