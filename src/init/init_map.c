@@ -85,24 +85,6 @@ static int	is_blank_line(const char *s)
 	return (*s == '\0');
 }
 
-/* read map block ----------------------------------------------------------- */
-static int	read_map(int fd, t_cub *cub, int *cap)
-{
-	char	*line;
-
-	if (skip_to_map(fd, &line))
-		return (-1);
-	while (line && is_map_line(line))
-	{
-		if (push_line(line, &cub->map.grid, &cub->map.h, cap, &cub->map.w))
-			return (free(line), -1);
-		free(line);
-		line = get_next_line(fd);
-	}
-	free(line);
-	return (0);
-}
-
 /* lee la sección de mapa y valida que no haya contenido tras el mapa ------ */
 int	read_map(int fd, t_cub *cub, int *cap)
 {
