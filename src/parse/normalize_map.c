@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   normalize_map.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: carlsanc <carlsanc@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/30 14:40:11 by carlsanc          #+#    #+#             */
+/*   Updated: 2025/09/30 14:40:11 by carlsanc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cub3d.h"
 
 static char	*pad_line(char *src, int w)
@@ -11,14 +23,17 @@ static char	*pad_line(char *src, int w)
 	i = 0;
 	while (src[i] && i < w)
 	{
-		if (src[i] == ' ' || src[i] == '\n' || src[i] == '\r')
-			dst[i] = '1';
+		if (src[i] == '\n' || src[i] == '\r' || src[i] == '\t')
+			dst[i] = ' ';
 		else
 			dst[i] = src[i];
 		++i;
 	}
 	while (i < w)
-		dst[i++] = '1';
+	{
+		dst[i] = ' ';
+		++i;
+	}
 	dst[w] = '\0';
 	return (dst);
 }

@@ -1,40 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: carlsanc <carlsanc@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/30 14:40:09 by carlsanc          #+#    #+#             */
+/*   Updated: 2025/09/30 14:40:09 by carlsanc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cub3d.h"
 
-static int	validate_cell(t_map *m, int y, int x, int *sp)
+static int	is_valid_char(char c)
 {
-	if (!is_walk(m->grid[y][x]))
-		return (0);
-	if (out_of_bounds(m, y - 1, x) || out_of_bounds(m, y + 1, x)
-		|| out_of_bounds(m, y, x - 1) || out_of_bounds(m, y, x + 1))
-		return (-1);
-	if (m->grid[y][x] == 'N' || m->grid[y][x] == 'S'
-		|| m->grid[y][x] == 'E' || m->grid[y][x] == 'W')
-		++(*sp);
+	if (c == '0' || c == '1' || c == ' ' || c == 'N' || c == 'S')
+		return (1);
+	if (c == 'E' || c == 'W')
+		return (1);
 	return (0);
 }
 
-int	check_map(t_cub *cub)
+static int	is_walkable(char c)
 {
-	t_map	*m;
+	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
+
+static int	touches_space_or_border(t_map *m, int y, int x)
+{
+	if (y == 0 || x == 0 || y == m->h - 1 || x == m->w - 1)
+		return (1);
+	if (m->grid[y - 1][x] == ' ' || m->grid[y + 1][x] == ' ')
+		return (1);
+	if (m->grid[y][x - 1] == ' ' || m->grid[y][x + 1] == ' ')
+		return (1);
+	return (0);
+}
+
+static int	scan_chars_and_spawn(t_map *m, int *spawn)
+{
 	int		y;
 	int		x;
-	int		spawn;
+	char	c;
 
-	m = &cub->map;
-	spawn = 0;
 	y = 0;
 	while (y < m->h)
 	{
 		x = 0;
 		while (x < m->w)
 		{
-			if (validate_cell(m, y, x, &spawn))
+			c = m->grid[y][x];
+			if (!is_valid_char(c))
+				return (-1);
+			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+				++(*spawn);
+			++x;
+		}
+		++y;
+	}
+	return (0);
+}
+
+static int	check_closure(t_map *m)
+{
+	int		y;
+	int		x;
+
+	y = 0;
+	while (y < m->h)
+	{
+		x = 0;
+		while (x < m->w)
+		{
+			if (is_walkable(m->grid[y][x])
+				&& touches_space_or_border(m, y, x))
 				return (-1);
 			++x;
 		}
 		++y;
 	}
+	return (0);
+}
+
+int	check_map(t_cub *cub)
+{
+	int	spawn;
+
+	spawn = 0;
+	if (scan_chars_and_spawn(&cub->map, &spawn))
+		return (-1);
 	if (spawn != 1)
+		return (-1);
+	if (check_closure(&cub->map))
 		return (-1);
 	return (0);
 }
