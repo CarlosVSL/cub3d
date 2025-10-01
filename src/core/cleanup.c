@@ -23,7 +23,7 @@ static void	free_grid(char **grid)
 	while (grid[i])
 	{
 		free(grid[i]);
-		++i;
+		i++;
 	}
 	free(grid);
 }
@@ -39,7 +39,7 @@ static void	free_textures(t_cub *cub)
 		if (cub->textures[i].img.ptr)
 			mlx_destroy_image(cub->mlx, cub->textures[i].img.ptr);
 		free(cub->textures[i].path);
-		++i;
+		i++;
 	}
 }
 

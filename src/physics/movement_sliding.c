@@ -12,61 +12,71 @@
 
 #include "../../include/cub3d.h"
 
-/* -------------------------------------------------------------------------- */
-/*  Búsqueda binaria de la fracción máxima del desplazamiento sin colisión    */
-/* -------------------------------------------------------------------------- */
-static double binary_search_safe_distance(t_cub *c,
-                                          double x0, double y0,
-                                          double dx, double dy)
+/*
+** Binary search for the largest safe fraction of the displacement.
+*/
+static double	binary_search_safe_distance(t_cub *c, t_vec pos, t_vec d)
 {
-    double low = 0.0, high = 1.0, safe = 0.0;
+	double	low;
+	double	high;
+	double	safe;
+	double	mid;
 
-    while (high - low > EPS)
-    {
-        double mid = 0.5 * (low + high);
-        if (!is_wall(c, x0 + dx * mid, y0 + dy * mid))
-        {
-            safe = mid;
-            low  = mid;
-        }
-        else
-            high = mid;
-    }
-    return safe;
+	low = 0.0;
+	high = 1.0;
+	safe = 0.0;
+	while (high - low > EPS)
+	{
+		mid = 0.5 * (low + high);
+		if (!is_wall(c, pos.x + d.x * mid, pos.y + d.y * mid))
+		{
+			safe = mid;
+			low = mid;
+		}
+		else
+			high = mid;
+	}
+	return (safe);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Punto de extensión si quisieras refinar (mantengo estructura del bonus)   */
-/* -------------------------------------------------------------------------- */
-double  find_safe_distance(t_cub *c, double x0, double y0, double dx, double dy)
+/*
+** Extension point to refine later; binary search is enough for now.
+*/
+static double	find_safe_distance(t_cub *c, t_vec pos, t_vec d)
 {
-    (void)c; (void)x0; (void)y0; (void)dx; (void)dy;
-    /* Se podría iterar refinando normal de pared, etc.; el binario basta. */
-    return binary_search_safe_distance(c, x0, y0, dx, dy);
+	return (binary_search_safe_distance(c, pos, d));
 }
 
-static void handle_remaining_movement(t_cub *c, double dx, double dy, double t)
+static void	handle_remaining_movement(t_cub *c, double dx, double dy, double t)
 {
-    const double rx = dx * (1.0 - t);
-    const double ry = dy * (1.0 - t);
+	double	rx;
+	double	ry;
 
-    if (fabs(rx) > EPS || fabs(ry) > EPS)
-        try_smooth_move(c, rx, ry);
+	rx = dx * (1.0 - t);
+	ry = dy * (1.0 - t);
+	if (fabs(rx) > EPS || fabs(ry) > EPS)
+		try_smooth_move(c, rx, ry);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  PUBLIC: aplica deslizamiento suave en caso de colisión parcial            */
-/* -------------------------------------------------------------------------- */
-void    apply_wall_sliding(t_cub *c, double dx, double dy)
+/*
+** PUBLIC: apply smooth wall sliding on partial collision.
+*/
+void	apply_wall_sliding(t_cub *c, double dx, double dy)
 {
-    const double t = find_safe_distance(c, c->player.pos.x, c->player.pos.y, dx, dy);
+	t_vec	pos;
+	t_vec	d;
+	double	t;
 
-    if (t > EPS)
-    {
-        c->player.pos.x += dx * t;
-        c->player.pos.y += dy * t;
-        handle_remaining_movement(c, dx, dy, t);
-    }
-    else
-        try_smooth_move(c, dx, dy);
+	pos = c->player.pos;
+	d.x = dx;
+	d.y = dy;
+	t = find_safe_distance(c, pos, d);
+	if (t > EPS)
+	{
+		c->player.pos.x += dx * t;
+		c->player.pos.y += dy * t;
+		handle_remaining_movement(c, dx, dy, t);
+	}
+	else
+		try_smooth_move(c, dx, dy);
 }

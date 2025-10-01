@@ -28,10 +28,11 @@ void	draw_floor_ceil(t_cub *cub)
 		x = 0;
 		while (x < WIN_W)
 		{
-			dst = cub->screen.data + y * (cub->screen.line_len / 4) + x;
+			dst = cub->screen.data
+				+ y * (cub->screen.line_len / 4) + x;
 			*dst = color;
-			++x;
+			x++;
 		}
-		++y;
+		y++;
 	}
 }

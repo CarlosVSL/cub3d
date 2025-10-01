@@ -22,7 +22,7 @@ void	free_arr(char **arr)
 	while (arr[i])
 	{
 		free(arr[i]);
-		++i;
+		i++;
 	}
 	free(arr);
 }

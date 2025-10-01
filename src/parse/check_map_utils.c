@@ -12,14 +12,39 @@
 
 #include "../../include/cub3d.h"
 
-/* walkable cell ------------------------------------------------------------ */
+/* check if a map cell is walkable */
 int	is_walk(char c)
 {
-	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+	return (c == '0'
+		|| c == 'N'
+		|| c == 'S'
+		|| c == 'E'
+		|| c == 'W');
 }
 
-/* safe index inside map ---------------------------------------------------- */
+/* check if (y, x) is outside the map bounds */
 int	out_of_bounds(t_map *m, int y, int x)
 {
-	return (y < 0 || x < 0 || y >= m->h || x >= m->w);
+	return (y < 0
+		|| x < 0
+		|| y >= m->h
+		|| x >= m->w);
+}
+
+int	is_walkable(char c)
+{
+	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
+
+int	touches_space_or_border(t_map *m, int y, int x)
+{
+	if (y == 0 || x == 0 || y == m->h - 1 || x == m->w - 1)
+		return (1);
+	if (m->grid[y - 1][x] == ' ' || m->grid[y + 1][x] == ' ')
+		return (1);
+	if (m->grid[y][x - 1] == ' ' || m->grid[y][x + 1] == ' ')
+		return (1);
+	return (0);
 }

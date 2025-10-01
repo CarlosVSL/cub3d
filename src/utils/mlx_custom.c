@@ -19,11 +19,11 @@ t_img	img_create(void *mlx, int w, int h)
 	img.ptr = mlx_new_image(mlx, w, h);
 	if (!img.ptr)
 	{
-		memset(&img, 0, sizeof(t_img));
+		ft_bzero(&img, sizeof(t_img));
 		return (img);
 	}
-	img.data = (int *)mlx_get_data_addr(\
-		img.ptr, &img.bpp, &img.line_len, &img.endian);
+	img.data = (int *)mlx_get_data_addr(img.ptr, &img.bpp,
+			&img.line_len, &img.endian);
 	img.w = w;
 	img.h = h;
 	return (img);
@@ -34,7 +34,7 @@ void	img_destroy(void *mlx, t_img *img)
 	if (img && img->ptr)
 	{
 		mlx_destroy_image(mlx, img->ptr);
-		memset(img, 0, sizeof(t_img));
+		ft_bzero(img, sizeof(t_img));
 	}
 }
 

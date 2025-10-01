@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: carlsanc <carlsanc@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/01 15:30:15 by carlsanc          #+#    #+#             */
+/*   Updated: 2025/10/01 15:30:15 by carlsanc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
@@ -21,6 +33,23 @@ typedef struct s_ray
 	int		tex_id;
 	int		tex_x;
 }	t_ray;
+
+typedef struct s_grid_ctx
+{
+	char	***g;
+	int		*h;
+	int		*cap;
+	int		*w;
+}	t_grid_ctx;
+
+typedef struct s_slice
+{
+	int		x;
+	int		start;
+	int		end;
+	double	step;
+	double	tex_pos;
+}	t_slice;
 
 typedef struct s_img
 {

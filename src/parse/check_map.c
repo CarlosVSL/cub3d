@@ -21,24 +21,6 @@ static int	is_valid_char(char c)
 	return (0);
 }
 
-static int	is_walkable(char c)
-{
-	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
-		return (1);
-	return (0);
-}
-
-static int	touches_space_or_border(t_map *m, int y, int x)
-{
-	if (y == 0 || x == 0 || y == m->h - 1 || x == m->w - 1)
-		return (1);
-	if (m->grid[y - 1][x] == ' ' || m->grid[y + 1][x] == ' ')
-		return (1);
-	if (m->grid[y][x - 1] == ' ' || m->grid[y][x + 1] == ' ')
-		return (1);
-	return (0);
-}
-
 static int	scan_chars_and_spawn(t_map *m, int *spawn)
 {
 	int		y;
@@ -55,18 +37,18 @@ static int	scan_chars_and_spawn(t_map *m, int *spawn)
 			if (!is_valid_char(c))
 				return (-1);
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-				++(*spawn);
-			++x;
+				(*spawn)++;
+			x++;
 		}
-		++y;
+		y++;
 	}
 	return (0);
 }
 
 static int	check_closure(t_map *m)
 {
-	int		y;
-	int		x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < m->h)
@@ -77,9 +59,9 @@ static int	check_closure(t_map *m)
 			if (is_walkable(m->grid[y][x])
 				&& touches_space_or_border(m, y, x))
 				return (-1);
-			++x;
+			x++;
 		}
-		++y;
+		y++;
 	}
 	return (0);
 }

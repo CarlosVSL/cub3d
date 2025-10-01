@@ -21,7 +21,7 @@ static int	is_space(int c)
 static char	*ltrim(const char *s)
 {
 	while (*s && is_space((unsigned char)*s))
-		++s;
+		s++;
 	return ((char *)s);
 }
 
@@ -32,7 +32,7 @@ static size_t	rtrim_len(const char *s)
 	len = ft_strlen(s);
 	while (len && (s[len - 1] == ' ' || s[len - 1] == '\t'
 			|| s[len - 1] == '\n' || s[len - 1] == '\r'))
-		--len;
+		len--;
 	return (len);
 }
 

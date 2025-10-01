@@ -27,12 +27,12 @@ static char	*pad_line(char *src, int w)
 			dst[i] = ' ';
 		else
 			dst[i] = src[i];
-		++i;
+		i++;
 	}
 	while (i < w)
 	{
 		dst[i] = ' ';
-		++i;
+		i++;
 	}
 	dst[w] = '\0';
 	return (dst);
@@ -51,7 +51,7 @@ int	normalize_map(t_map *map)
 			return (-1);
 		free(map->grid[y]);
 		map->grid[y] = new_line;
-		++y;
+		y++;
 	}
 	return (0);
 }

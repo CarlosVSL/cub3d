@@ -12,15 +12,35 @@
 
 #include "../../include/cub3d.h"
 
-#include "../../include/cub3d.h"
-
-/* Inicializa el estado base y recuerda el directorio del mapa */
-static int init_basics(t_cub *cub, const char *map_path)
+static int	step_init_mlx(t_cub *cub)
 {
-	ft_bzero(cub, sizeof(t_cub));
-	cub->map_dir = ft_dirname(map_path);
-	if (!cub->map_dir)
-		return (-1);
+	if (init_mlx(cub))
+		return (fail(cub,
+				"Failed to initialize graphics (MiniLibX/display)"));
+	return (0);
+}
+
+static int	step_init_textures(t_cub *cub)
+{
+	if (init_textures(cub))
+		return (fail(cub,
+				"Texture load failed: missing file or wrong size "
+				"(64x64 required)"));
+	return (0);
+}
+
+static int	step_init_player(t_cub *cub)
+{
+	if (init_player(cub))
+		return (fail(cub,
+				"Invalid map: missing or multiple player spawn"));
+	return (0);
+}
+
+static int	step_set_hooks(t_cub *cub)
+{
+	if (set_hooks(cub))
+		return (fail(cub, "Failed to install window hooks"));
 	return (0);
 }
 
@@ -28,52 +48,20 @@ int	cub3d_run(const char *map_path)
 {
 	t_cub	cub;
 
-	/* 1) Estado básico + map_dir */
 	if (init_basics(&cub, map_path))
-	{
-		cub_error(&cub, "Out of memory while resolving map directory");
+		return (fail(&cub,
+				"Out of memory while resolving map directory"));
+	if (step_parse(&cub, map_path))
 		return (-1);
-	}
-
-	/* 2) Parser (.cub): ids, colores y mapa (incluye check_map) */
-	if (parse_scene(&cub, map_path))
-	{
-		cub_error(&cub, "Invalid scene file: bad identifiers or map format");
+	if (step_init_mlx(&cub))
 		return (-1);
-	}
-
-	/* 3) MiniLibX */
-	if (init_mlx(&cub))
-	{
-		cub_error(&cub, "Failed to initialize graphics (MiniLibX/display)");
+	if (step_init_textures(&cub))
 		return (-1);
-	}
-
-	/* 4) Texturas (ruta inexistente o tamaño != 64x64) */
-	if (init_textures(&cub))
-	{
-		cub_error(&cub, "Texture load failed: missing file or wrong size (64x64 required)");
+	if (step_init_player(&cub))
 		return (-1);
-	}
-
-	/* 5) Jugador (debe existir exactamente un spawn) */
-	if (init_player(&cub))
-	{
-		cub_error(&cub, "Invalid map: missing or multiple player spawn");
+	if (step_set_hooks(&cub))
 		return (-1);
-	}
-
-	/* 6) Hooks de ventana */
-	if (set_hooks(&cub))
-	{
-		cub_error(&cub, "Failed to install window hooks");
-		return (-1);
-	}
-
-	/* 7) Loop principal */
 	mlx_loop(cub.mlx);
-
-	/* 8) Limpieza normal al salir del loop */
 	cub_cleanup(&cub);
 	return (0);
 }

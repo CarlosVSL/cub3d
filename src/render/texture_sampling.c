@@ -12,9 +12,9 @@
 
 #include "../../include/cub3d.h"
 
-/* -------------------------------------------------------------------------- */
-/*	Return ARGB color from a 64×64 texture.									*/
-/* -------------------------------------------------------------------------- */
+/*
+** Return ARGB color from a 64x64 texture.
+*/
 int	tex_sample(t_cub *cub, int id, int x, int y)
 {
 	if (id < 0 || id >= 4)

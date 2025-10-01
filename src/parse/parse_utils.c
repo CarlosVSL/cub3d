@@ -12,19 +12,19 @@
 
 #include "../../include/cub3d.h"
 
-/* -------------------------------------------------------------------------- */
-/*  Trim leading spaces/tabs                                                  */
-/* -------------------------------------------------------------------------- */
+/*
+** Trim leading spaces/tabs
+*/
 char	*skip_spaces(char *s)
 {
 	while (*s == ' ' || *s == '\t')
-		++s;
+		s++;
 	return (s);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Read an integer, advance ptr, store in out                                */
-/* -------------------------------------------------------------------------- */
+/*
+** Read an integer, advance ptr, store in out
+*/
 int	parse_int(const char **str, int *out)
 {
 	int	val;
@@ -36,19 +36,19 @@ int	parse_int(const char **str, int *out)
 	while (**str >= '0' && **str <= '9')
 	{
 		val = val * 10 + (**str - '0');
-		++(*str);
+		(*str)++;
 	}
 	*out = val;
 	return (0);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Una línea es de mapa si:                                                  */
-/*   - No es un identificador (NO, SO, WE, EA, F, C)                          */
-/*   - Contiene SOLO {' ', '0','1','N','S','E','W'} hasta fin de línea        */
-/*   - Contiene al menos un tile real (no solo espacios)                      */
-/*  Nota: se permiten tabs iniciales como en headers; en mapa, espacio es sig.*/
-/* -------------------------------------------------------------------------- */
+/*
+** A line is a map line if:
+** - It is not an identifier (NO, SO, WE, EA, F, C)
+** - It contains only {' ', '0','1','N','S','E','W'} until EOL
+** - It has at least one non-space tile
+** Note: leading tabs are allowed; in map, space is significant.
+*/
 static int	is_identifier(const char *s)
 {
 	if ((s[0] == 'N' && s[1] == 'O') || (s[0] == 'S' && s[1] == 'O'))
@@ -65,7 +65,7 @@ int	is_map_line(const char *s)
 	int	has_tile;
 
 	while (*s == '\t')
-		++s;
+		s++;
 	if (*s == '\0')
 		return (0);
 	if (is_identifier(s))
@@ -81,7 +81,7 @@ int	is_map_line(const char *s)
 		}
 		else
 			return (0);
-		++s;
+		s++;
 	}
 	return (has_tile);
 }
