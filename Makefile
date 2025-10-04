@@ -66,7 +66,8 @@ fclean: clean
 	$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
-re: fclean all
+re: fclean
+	$(MAKE) all
 
 # ----------------------------------------------------------------------------- #
 # Phony
