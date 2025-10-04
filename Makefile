@@ -57,25 +57,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 # ----------------------------------------------------------------------------- #
 # Limpieza
 # ----------------------------------------------------------------------------- #
-
 clean:
 	$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	# Sólo limpia MLX si está la carpeta; y no falles si no está configurada
-	@if [ -d "$(MLX_DIR)" ]; then \
-		$(MAKE) -C $(MLX_DIR) clean || true; \
-	fi
+	@$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	# (Opcional) Si quieres además borrar artefactos de MLX, hazlo sin romper:
-	@if [ -d "$(MLX_DIR)" ]; then \
-		$(MAKE) -C $(MLX_DIR) clean || true; \
-	fi
 
-re: fclean
-	$(MAKE) all
+re: fclean all
 
 # ----------------------------------------------------------------------------- #
 # Phony
