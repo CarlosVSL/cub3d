@@ -60,7 +60,7 @@ static int	process_meta(t_cub *cub, t_list *node, const char *path)
 	ceil_set = 0;
 	if (scan_header(cub, &node, &floor_set, &ceil_set))
 		return (-1);
-	if (validate_header_complete(cub, !!node, floor_set, ceil_set))
+	if (validate_header_complete(cub, node != NULL, floor_set, ceil_set))
 		return (-1);
 	return (init_map(cub, path));
 }
