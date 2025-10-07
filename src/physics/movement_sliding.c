@@ -40,7 +40,7 @@ static double	binary_search_safe_distance(t_cub *c, t_vec pos, t_vec d)
 }
 
 /*
-** Extension point to refine later; binary search is enough for now.
+** Extension point;
 */
 static double	find_safe_distance(t_cub *c, t_vec pos, t_vec d)
 {

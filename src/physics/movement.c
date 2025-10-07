@@ -13,7 +13,7 @@
 #include "../../include/cub3d.h"
 
 /*
-** Player rotation (reusable)
+** Player rotation
 */
 void	rotate_player(t_player *p, double angle)
 {

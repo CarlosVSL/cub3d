@@ -12,10 +12,6 @@
 
 #include "../../include/cub3d.h"
 
-/*
-** Stub de colisión con sprites/otros (ajústalo si tu base tiene sprites).
-** Devuelve 0 para ignorar sprites; no requiere headers extra.
-*/
 static int	check_sprite_collision(t_cub *c, double x, double y)
 {
 	(void)c;
